@@ -1,10 +1,45 @@
-import com.bethecoder.ascii_table.ASCIITable;
-
 import java.util.ArrayList;
 
 public class TruthTable {
-    public static ArrayList<String[]> generateBaseTable(char[] vars) {
-        int n = vars.length;
+    private final ArrayList<Character> vars;
+    private final ArrayList<String[]> table;
+
+    public TruthTable(char[] vars) {
+        this.vars = new ArrayList<>();
+        for (char var : vars) {
+            if (!Character.toString(var).equals("")) {
+                this.vars.add(var);
+            }
+        }
+        this.table = this.baseTable();
+    }
+
+    public TruthTable(char var1, char var2) {
+        this(new char[]{ var1, var2 });
+    }
+
+    public ArrayList<Character> getVars() {
+        return this.vars;
+    }
+
+    public ArrayList<String[]> getTable() {
+        return this.table;
+    }
+
+    public void addTable(String[] table) {
+        this.table.add(table);
+    }
+
+    public boolean verifySize() {
+        return this.vars.size() >= 2;
+    }
+
+    public ArrayList<String[]> baseTable() {
+        if (!this.verifySize()) {
+            return null;
+        }
+
+        int n = this.vars.size();
 
         int varsPow = (int) Math.pow(2, n);
 
@@ -20,7 +55,7 @@ public class TruthTable {
 
             String[] column = new String[varsPow+1];
 
-            column[0] = "" + vars[i];
+            column[0] = "" + vars.get(i);
 
             String currLetter = "V";
             int count = 0;
@@ -46,90 +81,63 @@ public class TruthTable {
         return matriz;
     }
 
-    public static String[] generatePropositionTable (String type, String[] var1, String[] var2) {
+    public String[] conjunctionTable(String[] var1, String[] var2) {
         String[] row = new String[var1.length];
 
-        switch (type) {
-            case "conjunction" -> {
-                row[0] = var1[0] + " ^ " + var2[0];
-                for (int i = 1; i < var1.length; i++) {
-                    if (var1[i].equals("V") && var2[i].equals("V")) {
-                        row[i] = "V";
-                    } else {
-                        row[i] = "F";
-                    }
-                }
-            }
-            case "disjunction" -> {
-                row[0] = var1[0] + " v " + var2[0];
-                for (int i = 1; i < var1.length; i++) {
-                    if (var1[i].equals("V") || var2[i].equals("V")) {
-                        row[i] = "V";
-                    } else {
-                        row[i] = "F";
-                    }
-                }
-            }
-            case "implication" -> {
-                row[0] = var1[0] + " -> " + var2[0];
-                for (int i = 1; i < var1.length; i++) {
-                    if (var1[i].equals("V") && var2[i].equals("F")) {
-                        row[i] = "F";
-                    } else {
-                        row[i] = "V";
-                    }
-                }
-            }
-            case "biconditional" -> {
-                row[0] = var1[0] + " <-> " + var2[0];
-                for (int i = 1; i < var1.length; i++) {
-                    if (var1[i].equals(var2[i])) {
-                        row[i] = "V";
-                    } else {
-                        row[i] = "F";
-                    }
-                }
-            }
-            default -> {
+        row[0] = var1[0] + " ^ " + var2[0];
+        for (int i = 1; i < var1.length; i++) {
+            if (var1[i].equals("V") && var2[i].equals("V")) {
+                row[i] = "V";
+            } else {
+                row[i] = "F";
             }
         }
 
         return row;
     }
 
-    public static void main(String[] args) {
-        char[] vars = new char[2];
-        vars[0] = 'p';
-        vars[1] = 'q';
-        ArrayList<String[]> baseTable = generateBaseTable(vars);
+    public String[] disjunctionTable(String[] var1, String[] var2) {
+        String[] row = new String[var1.length];
 
-        String[] conjunctionTable = generatePropositionTable("conjunction", baseTable.get(0), baseTable.get(1));
-        String[] disjunctionTable = generatePropositionTable("disjunction", baseTable.get(0), baseTable.get(1));
-        String[] implicationTable = generatePropositionTable("implication", baseTable.get(0), baseTable.get(1));
-        String[] biconditionalTable = generatePropositionTable("biconditional", baseTable.get(0), baseTable.get(1));
-
-        baseTable.add(conjunctionTable);
-        baseTable.add(disjunctionTable);
-        baseTable.add(implicationTable);
-        baseTable.add(biconditionalTable);
-
-        printTable(baseTable);
-    }
-
-    public static void printTable(ArrayList<String[]> table) {
-        String[] header = new String[table.size()];
-        String[][] matriz = new String[table.get(0).length-1][table.size()];
-
-        for (int i = 0; i < table.size(); i++) {
-            String[] currVar = table.get(i);
-
-            header[i] = currVar[0];
-
-            for (int j = 0; j < currVar.length-1; j++) {
-                matriz[j][i] = currVar[j+1];
+        row[0] = var1[0] + " v " + var2[0];
+        for (int i = 1; i < var1.length; i++) {
+            if (var1[i].equals("V") || var2[i].equals("V")) {
+                row[i] = "V";
+            } else {
+                row[i] = "F";
             }
         }
 
-        ASCIITable.getInstance().printTable(header, matriz);
+        return row;
+    }
+
+    public String[] implicationTable(String[] var1, String[] var2) {
+        String[] row = new String[var1.length];
+
+        row[0] = var1[0] + " -> " + var2[0];
+        for (int i = 1; i < var1.length; i++) {
+            if (var1[i].equals("V") && var2[i].equals("F")) {
+                row[i] = "F";
+            } else {
+                row[i] = "V";
+            }
+        }
+
+        return row;
+    }
+
+    public String[] biconditionalTable(String[] var1, String[] var2) {
+        String[] row = new String[var1.length];
+
+        row[0] = var1[0] + " <-> " + var2[0];
+        for (int i = 1; i < var1.length; i++) {
+            if (var1[i].equals(var2[i])) {
+                row[i] = "V";
+            } else {
+                row[i] = "F";
+            }
+        }
+
+        return row;
     }
 }
