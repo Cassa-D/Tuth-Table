@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class TruthTable {
     private final ArrayList<Character> vars;
-    private final ArrayList<String[]> table;
+    private ArrayList<String[]> table;
 
     public TruthTable(char[] vars) {
         this.vars = new ArrayList<>();
@@ -11,23 +11,15 @@ public class TruthTable {
                 this.vars.add(var);
             }
         }
-        this.table = this.baseTable();
+        this.generateTable();
     }
 
     public TruthTable(char var1, char var2) {
         this(new char[]{ var1, var2 });
     }
 
-    public ArrayList<Character> getVars() {
-        return this.vars;
-    }
-
     public ArrayList<String[]> getTable() {
         return this.table;
-    }
-
-    public void addTable(String[] table) {
-        this.table.add(table);
     }
 
     public boolean verifySize() {
@@ -81,7 +73,7 @@ public class TruthTable {
         return matriz;
     }
 
-    public String[] conjunctionTable(String[] var1, String[] var2) {
+    public static String[] conjunctionTable(String[] var1, String[] var2) {
         String[] row = new String[var1.length];
 
         row[0] = var1[0] + " ^ " + var2[0];
@@ -96,7 +88,7 @@ public class TruthTable {
         return row;
     }
 
-    public String[] disjunctionTable(String[] var1, String[] var2) {
+    public static String[] disjunctionTable(String[] var1, String[] var2) {
         String[] row = new String[var1.length];
 
         row[0] = var1[0] + " v " + var2[0];
@@ -111,7 +103,7 @@ public class TruthTable {
         return row;
     }
 
-    public String[] implicationTable(String[] var1, String[] var2) {
+    public static String[] implicationTable(String[] var1, String[] var2) {
         String[] row = new String[var1.length];
 
         row[0] = var1[0] + " -> " + var2[0];
@@ -126,7 +118,7 @@ public class TruthTable {
         return row;
     }
 
-    public String[] biconditionalTable(String[] var1, String[] var2) {
+    public static String[] biconditionalTable(String[] var1, String[] var2) {
         String[] row = new String[var1.length];
 
         row[0] = var1[0] + " <-> " + var2[0];
@@ -139,5 +131,35 @@ public class TruthTable {
         }
 
         return row;
+    }
+
+    private void generateTable() {
+        this.table = this.baseTable();
+
+        StringBuilder possibleCombinations = new StringBuilder();
+        for (int i = 0; i < this.vars.size(); i++) {
+            char var1 = this.vars.get(i);
+            for(int j = 0; j < this.vars.size(); j++) {
+                char var2 = this.vars.get(j);
+
+                String combination1 = "" + var1 + var2 + ";";
+                String combination2 = "" + var2 + var1 + ";";
+                if (var1 == var2 || possibleCombinations.toString().contains(combination1) || possibleCombinations.toString().contains(combination2)) {
+                    continue;
+                }
+
+                possibleCombinations.append(combination1);
+
+                String[] conjunctionTable = TruthTable.conjunctionTable(this.table.get(i), this.table.get(j));
+                String[] disjunctionTable = TruthTable.disjunctionTable(this.table.get(i), this.table.get(j));
+                String[] implicationTable = TruthTable.implicationTable(this.table.get(i), this.table.get(j));
+                String[] biconditionalTable = TruthTable.biconditionalTable(this.table.get(i), this.table.get(j));
+
+                this.table.add(conjunctionTable);
+                this.table.add(disjunctionTable);
+                this.table.add(implicationTable);
+                this.table.add(biconditionalTable);
+            }
+        }
     }
 }

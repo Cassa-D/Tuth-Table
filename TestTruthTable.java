@@ -4,23 +4,7 @@ import java.util.ArrayList;
 
 public class TestTruthTable {
     public static void main(String[] args) {
-        char[] vars = new char[2];
-        vars[0] = 'p';
-        vars[1] = 'q';
-
-        TruthTable truthTable = new TruthTable(vars);
-
-        ArrayList<String[]> baseTable = truthTable.getTable();
-
-        String[] conjunctionTable = truthTable.conjunctionTable(baseTable.get(0), baseTable.get(1));
-        String[] disjunctionTable = truthTable.disjunctionTable(baseTable.get(0), baseTable.get(1));
-        String[] implicationTable = truthTable.implicationTable(baseTable.get(0), baseTable.get(1));
-        String[] biconditionalTable = truthTable.biconditionalTable(baseTable.get(0), baseTable.get(1));
-
-        truthTable.addTable(conjunctionTable);
-        truthTable.addTable(disjunctionTable);
-        truthTable.addTable(implicationTable);
-        truthTable.addTable(biconditionalTable);
+        TruthTable truthTable = new TruthTable(new char[]{ 'p', 'q' });
 
         printTable(truthTable);
     }
