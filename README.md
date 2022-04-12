@@ -22,4 +22,14 @@ $ cd Truth-Table
 
 Jogue o arquivo `TruthTable.java` para dentro de sua IDE, baixe a biblioteca [ASCII Table](https://code.google.com/archive/p/java-ascii-table/) e a adicione no projeto.
 
+## Funcionalidade
+
+Ao executar o programa é mostrado toda a tabela verdade com as variáveis `p` e `q`.
+
+Resultado:
+
+![img.png](images/img.png)
+
+---
+
 __Desenvolvido por: [Cassiano Bitencourt](https://github.com/Cassa-D)__
