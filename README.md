@@ -20,15 +20,21 @@ $ git clone git@github.com:Cassa-D/Tuth-Table.git
 $ cd Truth-Table
 ``` 
 
-Jogue o arquivo `TruthTable.java` para dentro de sua IDE, baixe a biblioteca [ASCII Table](https://code.google.com/archive/p/java-ascii-table/) e a adicione no projeto.
+Jogue o arquivo `TruthTable.java` e `TestTruthTable.java` para dentro de sua IDE e adicione ao projeto a biblioteca [ASCII Table](https://code.google.com/archive/p/java-ascii-table/).
 
 ## Funcionalidade
 
-Ao executar o programa é mostrado toda a tabela verdade com as variáveis `p` e `q`.
+Ao executar o programa (`TestTruthTable.java >> main()`) é mostrado toda a tabela verdade com as variáveis `p` e `q`.
 
 Resultado:
 
 ![img.png](images/img.png)
+
+> Para adicionar mais varáveis é só adicionar na linha 7 mais letras.
+> 
+> Exemplo com três variáveis:
+> 
+> ![img.png](images/img2.png)
 
 ---
 

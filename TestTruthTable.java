@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestTruthTable {
     public static void main(String[] args) {
-        TruthTable truthTable = new TruthTable(new char[]{ 'p', 'q' });
+        TruthTable truthTable = new TruthTable(new char[]{ 'p', 'q', 'r' });
 
         printTable(truthTable);
     }
